@@ -4,4 +4,4 @@ Open the index.html file in a browser. in it there is code that runs an animatio
 
  - Make a second ball (easy)
  - Make the balls change color whenever they hit the walls (medium)
- - Make the balls collide with each other (hard)
+ - Make the balls collide with each other and bounce off, instead of phasing through each other (hard)
