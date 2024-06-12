@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <body style="background-color:black">
+        <!-- Canvas element we'll draw things on -->
+        <canvas width="400px" height="400px" id="canvas-element" style="background-color:white"></canvas>
+
+        <!-- Javascript code inside of HTML code -->
+        <script>
+            // Grab the canvas element we created above
+            let canvas = document.getElementById("canvas-element")
+            // Create "context" from the canvas, this is what we use to draw images
+            let context = canvas.getContext("2d")
+
+            // Make a Ball class
+            class Ball {
+                constructor() {
+                    this.x = 0;
+                    this.y = 0;
+                    this.horizontalVelocity = 1;
+                    this.verticalVelocity = 1;
+                    // radius of the ball is 10 pixels
+                    this.ballSize = 10
+                }
+
+                setXy(x, y) {
+                    this.x = x;
+                    this.y = y;
+                }
+
+                setVelocity(horizontal, vertical) {
+                    this.horizontalVelocity = horizontal;
+                    this.verticalVelocity = vertical;
+                }
+
+                // here we use canvas context to draw the ball
+                draw(context) {
+                    // set the balls color to blue
+                    context.fillStyle = "blue"
+                    // begin a path
+                    context.beginPath()
+                    // draw a circle
+                    // guide: arc(x, y, radius, startAngle, endAngle)
+                    context.arc(this.x, this.y, this.ballSize, 0, Math.PI * 2)
+                    context.fill()
+                }
+
+                step() {
+                    // make the ball bounce off the walls
+                    // by reversing direction when the ball hits the edge (400px) or (0px)
+
+                    // bounce off the right wall (x > 400)
+                    if(this.x >= 400 && this.horizontalVelocity > 0) {
+                        this.horizontalVelocity = -this.horizontalVelocity
+                    }
+
+                    // bounce off the left wall (x < 0)
+                    if(this.x < 0 && this.horizontalVelocity < 0) {
+                        this.horizontalVelocity = -this.horizontalVelocity
+                    }
+
+                    // bounce off the top wall (y < 0) 
+                    if(this.y < 0 && this.verticalVelocity < 0) {
+                        this.verticalVelocity = -this.verticalVelocity;
+                    }
+
+                    // bounce off the bottom wall (y > 400) 
+                    if(this.y > 400 && this.verticalVelocity > 0) {
+                        this.verticalVelocity = -this.verticalVelocity
+                    }
+
+                    // add the velocities to the positions (x and y) to move the ball
+                    this.x += this.horizontalVelocity
+                    this.y += this.verticalVelocity
+                }
+            }
+
+            // create a new instance of 'ball'
+            let ball1 = new Ball()
+
+            // put it in the middle (x = 200, y = 200)
+            ball1.setXy(200, 200);
+
+            // give it random velocity
+            ball1.setVelocity(3, 4)
+
+            // create an animation loop
+            function animate(time) {
+                // clear the screen before a new animation
+                context.clearRect(0, 0, 400, 400)
+                // move the ball by 1 step
+                ball1.step()
+                // draw the ball
+                ball1.draw(context)
+                // wait for the next step
+                window.requestAnimationFrame(animate)
+            }
+
+            // start the animation
+            animate()
+        </script>
+    </body>
+</html>
